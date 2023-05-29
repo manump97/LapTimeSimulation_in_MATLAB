@@ -1,0 +1,41 @@
+% ------ % MAIN SCRIPT LTS % ----- %
+close all force;clear all;clc;
+
+% Add paths
+addpath('car','config','config\export_fig','environment','powertrain','results','solver',...
+    'state_var','track','track\track_solver','track\track_models','track\track_functions','tyre')
+
+% Options
+
+Select_track = 'Montmelo'; % Select the track (Montmelo/Monza/Monaco/testrack)
+Select_car = 'Porsche911'; % Select the car (SeatLeon/Porsche911)
+Select_powertrain = '390HP'; % Select the powertrain (TSI_2.0/390HP)
+
+% Set configuration
+run software_config
+% Initialize models
+run environment_model;
+run track_model; %tck.surfaceXYZ.Pz = tck.surfaceXYZ.Pz.*0;
+run car_model
+run powertrain_model
+run tyre_model
+run state_var_model
+% Simulation solvers
+run trajectory_solver; %close all;
+run dynamic_status_solver
+% Results solvers
+run results_solver
+% Verification
+    % Software Optimum Lap
+    % Videos del vehiculo en pista
+% ...
+% Iteration process m = [500 1500]
+
+% time = stv.kin.time;ttime = sum(time);
+
+time = 1./(stv.kin.vx);time(1)=time(2).*2;
+lap_time = sum(time);
+fprintf('Lap Time [s]: %8.3f\n\n',lap_time)
+
+% close all;
+
